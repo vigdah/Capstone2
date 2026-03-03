@@ -1,1 +1,39 @@
+# IDE
 .idea/
+*.iml
+.vscode/
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/app/google-services.json
+
+# Backend
+backend/build/
+backend/.gradle/
+backend/src/main/resources/firebase-credentials.json
+
+# ML
+ml/data/processed.csv
+ml/data/splits/
+ml/models/
+ml/plots/
+ml/__pycache__/
+ml/src/__pycache__/
+ml/.venv/
+*.pyc
+
+# ONNX model (generated — do not commit large binary)
+android/app/src/main/assets/model.onnx
+
+# Secrets
+*.env
+*.key
+google-services.json
+firebase-credentials.json
+
+# OS
+.DS_Store
+Thumbs.db

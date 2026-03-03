@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Malware Detector</string>
+    <string name="notification_channel_id">malware_detector_service</string>
+    <string name="notification_channel_name">Malware Detection Service</string>
+    <string name="notification_service_title">Malware Detector Running</string>
+    <string name="notification_service_text">Monitoring app behavior in background</string>
+    <string name="alert_channel_id">malware_detector_alerts</string>
+    <string name="alert_channel_name">Security Alerts</string>
+</resources>
