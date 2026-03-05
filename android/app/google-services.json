@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "712983907365",
+    "project_id": "capstone2-4c5ab",
+    "storage_bucket": "capstone2-4c5ab.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:712983907365:android:97e649fd4ccc151ef9c3cc",
+        "android_client_info": {
+          "package_name": "com.capstone2.malwaredetector"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW6EQXHSIzghB5Fc359MVLW-MSDpQtHxg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

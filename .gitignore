@@ -3,37 +3,27 @@
 *.iml
 .vscode/
 
-# Android
+# Android build artifacts
 android/.gradle/
 android/build/
 android/app/build/
 android/local.properties
-android/app/google-services.json
 
-# Backend
+# Backend build artifacts
 backend/build/
 backend/.gradle/
-backend/src/main/resources/firebase-credentials.json
 
-# ML
+# ML raw data (1.1 GB — too large for git)
 ml/data/raw/
+
+# Processed CSV (171 MB — exceeds GitHub 100 MB limit; regenerate with ingest.py)
 ml/data/processed.csv
-ml/data/splits/
-ml/models/
-ml/plots/
+
+# Python cache
 ml/__pycache__/
 ml/src/__pycache__/
 ml/.venv/
 *.pyc
-
-# ONNX model (generated — do not commit large binary)
-android/app/src/main/assets/model.onnx
-
-# Secrets
-*.env
-*.key
-google-services.json
-firebase-credentials.json
 
 # Claude Code
 .claude/
