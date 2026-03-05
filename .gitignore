@@ -16,6 +16,7 @@ backend/.gradle/
 backend/src/main/resources/firebase-credentials.json
 
 # ML
+ml/data/raw/
 ml/data/processed.csv
 ml/data/splits/
 ml/models/
@@ -33,6 +34,9 @@ android/app/src/main/assets/model.onnx
 *.key
 google-services.json
 firebase-credentials.json
+
+# Claude Code
+.claude/
 
 # OS
 .DS_Store

@@ -9,7 +9,7 @@
 - Pushed repository to GitHub: https://github.com/vigdah/Capstone2
 - Implemented full project scaffold: Android shell, ML pipeline, Spring Boot backend
 
----
+-
 
 ## Project Overview
 

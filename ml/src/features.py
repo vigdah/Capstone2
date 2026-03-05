@@ -4,6 +4,9 @@ features.py — Feature engineering for the malware detection model.
 Reads processed.csv (from ingest.py), engineers features,
 and outputs train/test splits as numpy arrays.
 
+No scaling applied — XGBoost is tree-based and does not require
+feature normalization. Raw values are saved directly.
+
 Usage:
   python features.py --input ../data/processed.csv --output_dir ../data/splits
 """
@@ -11,11 +14,9 @@ Usage:
 import argparse
 import os
 
-import joblib
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 
 
 LABEL_COL = "is_malicious"
@@ -42,12 +43,6 @@ def load_and_split(csv_path: str):
     return X_train, X_test, y_train, y_test, feature_cols
 
 
-def fit_scaler(X_train: np.ndarray) -> StandardScaler:
-    scaler = StandardScaler()
-    scaler.fit(X_train)
-    return scaler
-
-
 def main():
     parser = argparse.ArgumentParser(description="Feature engineering and train/test split")
     parser.add_argument("--input", default="../data/processed.csv")
@@ -58,26 +53,18 @@ def main():
 
     X_train, X_test, y_train, y_test, feature_cols = load_and_split(args.input)
 
-    # Fit scaler on training data only
-    scaler = fit_scaler(X_train)
-    X_train_scaled = scaler.transform(X_train)
-    X_test_scaled = scaler.transform(X_test)
-
-    # Save splits
-    np.save(os.path.join(args.output_dir, "X_train.npy"), X_train_scaled)
-    np.save(os.path.join(args.output_dir, "X_test.npy"), X_test_scaled)
+    # Save raw (unscaled) splits — XGBoost does not require normalization
+    np.save(os.path.join(args.output_dir, "X_train.npy"), X_train)
+    np.save(os.path.join(args.output_dir, "X_test.npy"), X_test)
     np.save(os.path.join(args.output_dir, "y_train.npy"), y_train)
     np.save(os.path.join(args.output_dir, "y_test.npy"), y_test)
 
-    # Save scaler for inference-time preprocessing
-    joblib.dump(scaler, os.path.join(args.output_dir, "scaler.joblib"))
-
-    # Save feature column names for documentation
+    # Save feature column names (used by export_onnx.py to determine input_dim)
     with open(os.path.join(args.output_dir, "feature_names.txt"), "w") as f:
         f.write("\n".join(feature_cols))
 
-    print(f"\nSaved splits and scaler to {args.output_dir}/")
-    print(f"  X_train: {X_train_scaled.shape}, X_test: {X_test_scaled.shape}")
+    print(f"\nSaved splits to {args.output_dir}/")
+    print(f"  X_train: {X_train.shape}, X_test: {X_test.shape}")
     print(f"  Feature count: {len(feature_cols)}")
 
 

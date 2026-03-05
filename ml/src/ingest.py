@@ -21,34 +21,29 @@ import pandas as pd
 LABEL_COL = "Label"
 BENIGN_LABELS = {"Benign", "benign", "BENIGN"}
 
-# Features to keep from CICAndMal2017 that map to our collection approach
+# 9 CICAndMal2017 features that can be computed from Android NetworkStatsManager data.
+# Order matches the feature vector produced by FeatureExtractor.kt.
 FEATURE_COLUMNS = [
-    "Flow Bytes/s",
-    "Flow Packets/s",
-    "Bwd Packet Length Max",
-    "Fwd Packet Length Max",
-    "Total Fwd Packets",
-    "Total Backward Packets",
-    "Total Length of Fwd Packets",
-    "Total Length of Bwd Packets",
-    "Fwd Packet Length Mean",
-    "Bwd Packet Length Mean",
-    "Flow IAT Mean",
-    "Flow IAT Std",
-    "Fwd IAT Total",
-    "Bwd IAT Total",
-    "Fwd Header Length",
-    "Bwd Header Length",
-    "Packet Length Mean",
-    "Packet Length Std",
-    "Packet Length Variance",
-    "Average Packet Size",
+    "Total Fwd Packets",           # → packets_sent
+    "Total Backward Packets",      # → packets_received
+    "Total Length of Fwd Packets", # → bytes_sent
+    "Total Length of Bwd Packets", # → bytes_received
+    "Flow Bytes/s",                # → (bytes_sent + bytes_received) / window_sec
+    "Flow Packets/s",              # → (packets_sent + packets_received) / window_sec
+    "Fwd Packet Length Mean",      # → bytes_sent / max(packets_sent, 1)
+    "Bwd Packet Length Mean",      # → bytes_received / max(packets_received, 1)
+    "Average Packet Size",         # → (bytes_sent + bytes_received) / max(total_pkts, 1)
 ]
 
 
 def load_csvs(data_dir: str) -> pd.DataFrame:
-    """Load all CSV files from data_dir and concatenate them."""
-    csv_files = [f for f in os.listdir(data_dir) if f.endswith(".csv")]
+    """Load all CSV files from data_dir (recursively) and concatenate them."""
+    csv_files = []
+    for root, dirs, files in os.walk(data_dir):
+        for f in files:
+            if f.endswith(".csv"):
+                csv_files.append(os.path.join(root, f))
+
     if not csv_files:
         print(f"ERROR: No CSV files found in {data_dir}")
         print("Please download CICAndMal2017 dataset and place CSV files in ml/data/raw/")
@@ -56,9 +51,8 @@ def load_csvs(data_dir: str) -> pd.DataFrame:
         sys.exit(1)
 
     dfs = []
-    for fname in csv_files:
-        path = os.path.join(data_dir, fname)
-        print(f"  Loading {fname}...")
+    for path in csv_files:
+        print(f"  Loading {os.path.basename(path)}...")
         df = pd.read_csv(path, low_memory=False)
         dfs.append(df)
 
